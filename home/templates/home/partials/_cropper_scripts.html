@@ -1,0 +1,247 @@
+<script type="text/javascript">
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+
+	  const input = document.getElementById("profile_pic")
+    const imagePreview = document.getElementById("img-preview")
+    const modal = document.getElementById("modalUploadProfilePic")
+    const confirmBtn = document.getElementById("confirmBtn")
+    const csrf = getCookie('csrftoken');
+    const avatar = document.querySelectorAll('.user-pic')
+    const canvas = document.querySelector('canvas')
+    const editBtn = document.getElementById("editBtn")
+    const uploadBtn = document.getElementById("uploadBtn")
+    const closeBtn = document.getElementById("close")
+    const cancelBtn = document.getElementById("cancelBtn")
+    const deleteBtn = document.getElementById("deleteBtn")
+    const image = document.getElementById("image")
+
+    console.log(canvas)
+
+    input.addEventListener('change', (e) => {
+
+        //modal.classList.add('show')
+        //modal.style.display = "block"
+        deleteBtn.classList.add('d-none')
+        uploadBtn.classList.add('d-none')
+        editBtn.classList.add('d-none')
+        confirmBtn.classList.remove('d-none')
+        cancelBtn.classList.remove('d-none')
+
+        const imgData = input.files[0]
+        //if (imgData.size / 1024 / 1024 > 3) {
+         // console.log('image can be accepted')
+        //}
+        const url = URL.createObjectURL(imgData)
+        imagePreview.innerHTML = `<img src="${url}" id="image" class="user-pic">`
+
+        const image = document.getElementById('image');
+        
+
+        const cropper = new Cropper(image, {
+        aspectRatio: 9 / 9,
+        crop(event) {
+            console.log(event.detail.x);
+            console.log(event.detail.y);
+            console.log(event.detail.width);
+            console.log(event.detail.height);
+            console.log(event.detail.rotate);
+            console.log(event.detail.scaleX);
+            console.log(event.detail.scaleY);
+        }
+        });
+   
+        confirmBtn.addEventListener('click', (e) => {
+          //console.log("clicked")
+          if (document.querySelector(".cropper-container")){
+            document.querySelector(".cropper-container").style.display = "none"
+            document.getElementById("image").classList.remove("cropper-hidden")
+          }
+          deleteBtn.classList.remove('d-none')
+          cancelBtn.classList.add('d-none')
+          uploadBtn.classList.remove('d-none')
+          confirmBtn.classList.add('d-none')
+          editBtn.classList.remove('d-none')
+          
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                const fd = new FormData()
+                fd.append('csrfmiddlewaretoken', csrf)
+                fd.append('file', blob, imgData.name)
+    
+                const sendCroppedImage = async() => {
+                    try{
+                        const response = await fetch("{% url 'home:update-profile-image' %}", {
+                            method: "POST",
+                            headers: {
+                                'X-CSRFToken': csrf
+                              },
+                            body: fd
+                        })
+                        const data = await response.json()
+                        avatar.forEach(element => {
+                          element.src = data.image_url
+                        })
+                        image.src = data.image_url
+                    }catch (error) {
+                        console.log(error)
+                    }   
+                }
+                sendCroppedImage()
+
+            })  
+ 
+        })
+
+    })
+
+    cancelBtn.addEventListener('click', (e) => {
+      if (document.querySelector(".cropper-container")){
+        document.querySelector(".cropper-container").style.display = "none"
+        document.getElementById("image").classList.remove("cropper-hidden")
+      }
+      deleteBtn.classList.remove('d-none')
+      uploadBtn.classList.remove('d-none')
+      editBtn.classList.remove('d-none')
+      confirmBtn.classList.add('d-none')
+      cancelBtn.classList.add('d-none')
+
+
+
+    })
+
+    closeBtn.addEventListener('click', (e) => {
+      if (document.querySelector(".cropper-container")){
+        document.querySelector(".cropper-container").style.display = "none"
+        document.getElementById("image").classList.remove("cropper-hidden")
+       
+      }
+      input.value = ""
+      //imagePreview.innerHTML = `<img src="{{user.image_url}}" id="image" class="user-pic">`
+
+      deleteBtn.classList.remove('d-none')
+      cancelBtn.classList.add('d-none')
+      uploadBtn.classList.remove('d-none')
+      confirmBtn.classList.add('d-none')
+      editBtn.classList.remove('d-none')
+      
+      //imagePreview.innerHTML = `<img src="{{user.image_url}}" id="image" class="user-pic" style="display:block; max-width:100%">`
+
+      
+
+    })
+
+    editBtn.addEventListener('click', () => {
+      const image = document.getElementById('image');
+      
+       if (document.querySelector(".cropper-container")) {
+        document.querySelector(".cropper-container").style.display = "block"
+        document.getElementById("image").classList.add("cropper-hidden")
+      }
+
+      deleteBtn.classList.add('d-none')
+      cancelBtn.classList.remove('d-none')
+      uploadBtn.classList.add('d-none')
+      confirmBtn.classList.remove('d-none')
+      editBtn.classList.add('d-none')
+
+
+      
+      const cropper = new Cropper(image, {
+        aspectRatio: 9 / 9,
+        crop(event) {
+            console.log(event.detail.x);
+            console.log(event.detail.y);
+            console.log(event.detail.width);
+            console.log(event.detail.height);
+            console.log(event.detail.rotate);
+            console.log(event.detail.scaleX);
+            console.log(event.detail.scaleY);
+        }
+        });
+        
+        confirmBtn.addEventListener('click', (e) => {
+          if (document.querySelector(".cropper-container")){
+            document.querySelector(".cropper-container").style.display = "none"
+            document.getElementById("image").classList.remove("cropper-hidden")
+          }
+
+          deleteBtn.classList.remove('d-none')
+          cancelBtn.classList.add('d-none')
+          uploadBtn.classList.remove('d-none')
+          confirmBtn.classList.add('d-none')
+          editBtn.classList.remove('d-none')
+
+          cropper.getCroppedCanvas().toBlob((blob) => {
+              const fd = new FormData()
+              fd.append('csrfmiddlewaretoken', csrf)
+              fd.append('file', blob, '{{user.username}}.png')
+    
+              const sendCroppedImage = async() => {
+                  try{
+                      const response = await fetch("{% url 'home:update-profile-image' %}", {
+                          method: "POST",
+                          headers: {
+                              'X-CSRFToken': csrf
+                            },
+                          body: fd
+                      })
+                      data = await response.json()
+                      //confirmBtn.setAttribute("data-dismiss","modal")
+                      avatar.forEach(element => {
+                        element.src = data.image_url
+                      })
+                      image.src = data.image_url
+
+                      console.log(data.success)
+                  }catch (error) {
+                      console.log(error)
+                  }   
+              }
+              sendCroppedImage()
+              
+          })   
+      })
+        
+    })
+
+    deleteBtn.addEventListener('click', (e) => {
+      //console.log("clicked")
+      const image = document.getElementById('image');
+      const deleteImage = async() => {
+        try{
+          const response = await fetch("{% url 'home:delete-profile-image'%}", {
+              method: "POST",
+              headers: {
+                  'X-CSRFToken': csrf
+                },
+          })
+          data = await response.json()
+          console.log(data.image_url)
+          avatar.forEach(element => {
+            element.src = data.image_url
+          })
+          image.src = data.image_url
+
+
+      }catch (error) {
+          console.log(error)
+      }           
+    }
+      deleteImage()
+    })
+	
+
+</script>

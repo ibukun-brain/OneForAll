@@ -1,0 +1,57 @@
+{% extends 'partials/_base.html' %}
+{% load static %}
+{% block title %}Connections{% endblock title %}
+
+{% block body %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    
+    <!-- Container START -->
+    <div class="container">
+        <div class="row g-4">
+            {% include 'partials/_leftsidebar2.html' %}
+    
+            <!-- Main content START -->
+            <div class="col-md-8 col-lg-6 vstack gap-4">
+            <!-- Card START -->
+            <div class="card">
+                <!-- Card header START -->
+                <div class="card-header border-0 pb-0">
+                <div class="row g-2">
+                    <div class="col-lg-2">
+                    <!-- Card title -->
+                    <h1 class="h4 card-title mb-lg-0">Friends</h1>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 ms-lg-auto">
+                    <!-- Select Groups -->
+                    <select class="form-select js-choice choice-select-text-none" data-search-enabled="false">
+                        <option value="AB">Alphabetical</option>
+                        <option value="NG">Newest group</option>
+                        <option value="RA">Recently active</option>
+                        <option value="SG">Suggested</option>
+                    </select>
+                    </div>
+                </div>
+                </div>
+                <!-- Card header START -->
+                <!-- Card body START -->
+                <div class="card-body" id="friend-list-card-parent">
+                <!-- Tab nav line -->
+                    {% include 'friends/partials/_friend_list.html' %}
+            </div>
+            <!-- Card body END -->
+            </div>
+            <!-- Card END -->
+        </div>
+        <!-- Right sidebar END -->
+            
+
+    
+    </div> <!-- Row END -->
+</div>
+<!-- Container END -->
+</main>
+  <!-- **************** MAIN CONTENT END **************** -->
+  
+
+{% endblock body %}

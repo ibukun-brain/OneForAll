@@ -1,0 +1,11 @@
+{% if request_sent == 1 %}
+<form hx-target="this" hx-post="{% url 'friends:cancel-friend-request' %}">
+            <input type="hidden" name="user_receiver" value="{{user.slug}}">
+            <input type="hidden" name="request_sent" value="{{request_sent}}">
+            <button class="btn btn-danger-soft me-2" id="id_cancel_friend_request_btn"> 
+                <i class="bi bi-person-x pe-1"></i> 
+                Cancel Request 
+            </button>
+</form>
+
+{% endif %}

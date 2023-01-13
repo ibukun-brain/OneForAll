@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+	<title>{% block title %}{% endblock title %} | OFA - Network, Community</title>
+
+	{% include 'partials/seo/_meta.html' %}
+
+    {% include 'partials/_stylesheets.html' %}
+	{% block stylesheets %}{% endblock stylesheets %}
+</head>
+
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+ 
+
+
+<!-- ======================= Header END -->
+{% include 'partials/_navbar.html' %}
+<!-- ======================= Header END -->
+
+<!-- **************** MAIN CONTENT START **************** -->
+{% block body %}
+
+{% endblock body %} 
+
+{% include 'partials/_scripts.html' %}
+
+{% block scripts %}{% endblock scripts %}
+</body>
+
+
+</html>

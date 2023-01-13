@@ -1,0 +1,74 @@
+
+<div>
+    <!-- Avatar -->
+    
+        <input id="profile_pic" class="d-none" type="file" name="profile_pic" accept="image/*">
+        <div class="avatar avatar-xxl mt-n5 mb-3">
+          
+          {% if request.user == user %}
+          {% comment %} {{user.profile_image_lg}} {% endcomment %}
+            
+            <a href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Update Profile Picture" aria-label="Update Profile Picture">
+              <img class="avatar-img user-pic rounded-circle border border-white border-3" src="{{user.image_url}}" alt="" data-bs-toggle="modal" data-bs-target="#modalUploadProfilePic">
+            </a>
+          {% else %}
+          <img class="avatar-img rounded-circle border border-white border-3" src="{{user.image_url}}" alt="">
+          {% endif %}
+        </div>
+  </div>
+  <div class="ms-sm-4 mt-sm-3">
+    <!-- Info -->
+    <h1 class="mb-0 h5">{{user.get_full_name}} {% if user.is_verified %}<i class="bi bi-patch-check-fill text-success small"></i>{% endif %}</h1>
+    <p>{{friends.count}} connection{{friends|pluralize}}</p>
+  </div>
+{% if request.user.is_authenticated %}
+<div class="d-flex mt-3 justify-content-center ms-sm-auto" >
+
+
+<!-- THEM to YOU -->
+    {% if request_sent == 0 %}
+
+
+            <form hx-post="{% url 'friends:decline-friend-request' %}" hx-target="#profile-update">
+                <input type="hidden" name="pending_friend_request_id" value="{{pending_friend_request_id}}">
+                <input type="hidden" name="sender__user" value="{{user.slug}}">
+
+                <button id="id_confirm_{{id}}" class="btn btn-danger-soft me-2"><i class="bi bi-person-check pe-1"></i>Decline</button>
+            </form>
+
+            <form hx-post="{% url 'friends:accept-friend-request' %}" hx-target="#profile-update">
+                <input type="hidden" name="pending_friend_request_id" value="{{pending_friend_request_id}}">
+                <input type="hidden" name="sender__user" value="{{user.slug}}">
+                {% comment %} class="btn btn-danger-soft me-2"> <i class="bi bi-person-x pe-1"></i> Decline </a> {% endcomment %}
+                <button id="id_confirm_{{id}}" class="btn btn-primary-soft me-2"><i class="bi bi-person-check pe-1"></i>Accept</button>
+            </form>
+        {% comment %} </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
+    {% endif %}
+
+    {% if is_friend == False and request.user != user %}
+
+    <!-- You sent them a request -->
+    {% if request_sent == 1 %}
+            {% include 'friends/partials/_cancel_friend_request.html' %}
+    {% endif %}
+    <!-- No requests have been sent -->
+    {% if request_sent == -1 %}
+
+            {% include 'friends/partials/_send_friend_request.html' %}
+    {% endif %}
+{% endif %} 
+
+
+    {% if is_friend %}
+    <a class="btn btn-primary-soft me-2"> <i class="bi bi-chat-left-text"></i> Message </a>
+
+    <form hx-target="#profile-update" hx-post="{% url 'friends:remove-friend' %}">
+        <input type="hidden" name="remover_friend" value="{{user.slug}}">
+        <button class="btn btn-danger-soft me-2"> <i class="bi bi-person-x pe-1"></i> Unfriend </button>
+
+    </form>
+    {% endif %}
+
+</div>
+{% endif %}

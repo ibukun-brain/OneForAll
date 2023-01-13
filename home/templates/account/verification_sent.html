@@ -1,0 +1,36 @@
+{% extends "partials/_auth_Layout.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Verify Your E-mail Address" %}{% endblock title %}
+
+{% block body %}
+<main>
+  
+  <!-- Container START -->
+  <div class="container">
+    <div class="row justify-content-center align-items-center vh-100 py-5">
+      <!-- Main content START -->
+      <div class="col-sm-12 col-md-10 col-lg-9 col-xl-7 col-xxl-6">
+        <!-- Reset password START -->
+        <div class="card card-body rounded-3 text-center p-4 p-sm-5">
+          <!-- Title -->
+          <h1>{% trans "Verify Your E-mail Address" %}</h1>
+          {% comment %} <p>{% trans 'Are you sure you want to sign out?' %}</p> {% endcomment %}
+          <div class="mb-3">
+            <p class="lead">{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification e-mail in your main inbox, check your spam folder. Please contact us if you do not receive the verification e-mail within a few minutes.{% endblocktrans %}</p>
+          </div>
+          <p class="mb-0 mt-3">© {% now 'Y' %} <a target="_blank" href="{% url 'home:index' %}">OneForAll.</a></p>
+
+        </div>
+        <!-- Reset password END -->
+      </div>
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+
+
+
+{% endblock body %}

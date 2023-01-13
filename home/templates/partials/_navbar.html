@@ -1,0 +1,153 @@
+ {% load static %}
+ <!-- Responsive navbar toggler -->
+ <button class="close-navbar-toggler navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+</button>
+
+<!-- =======================
+Header START -->
+<header class="navbar-light bg-mode fixed-top">
+
+  <!-- Logo Nav START -->
+  <nav class="navbar navbar-icon navbar-expand-lg">
+      <div class="container-fluid">
+    
+    <!-- SideNav button -->
+    {% if request.path == "/" %}
+    <a class="btn text-secondary py-0 me-sm-3 sidebar-start-toggle">
+      <i class="bi bi-justify-left fs-3 lh-1"></i>
+    </a>
+    {% endif %}
+
+    <!-- Logo START -->
+    <a class="navbar-brand" href="{% url 'home:index' %}">
+        <img class="light-mode-item navbar-brand-item" src="{% static 'images/logo.svg' %}" alt="logo">
+        <img class="dark-mode-item navbar-brand-item" src="{% static 'images/logo.svg' %}" alt="logo">		
+    </a>
+    <!-- Logo END -->
+
+    <!-- Responsive navbar toggler -->
+
+    <button class="navbar-toggler ms-auto icon-md btn btn-light p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+      </span>
+    </button>
+
+        <!-- Main navbar START -->
+        
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll mx-auto">
+                <!-- Nav item -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home:index' %}"> <i class="bi bi-house"></i> <span class="nav-text"> Home </span> </a>
+                </li>
+
+                <!-- Nav item -->
+                <li class="nav-item dropdown">
+        <a class="nav-link" href="#"> <i class="bi bi-folder"></i> <span class="nav-text"> Albums </span> </a>
+                </li>
+
+                <!-- Nav item -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{% url 'friends:friend-lists' request.user.slug %}"> <i class="bi bi-people"></i> <span class="nav-text"> Friends </span> </a>
+                </li>
+
+                <!-- Nav item -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> 
+          <div class="badge-notif badge-notif-bottom"></div>
+          <i class="bi bi-chat-left"></i> <span class="nav-text"> messaging </span>
+        </a>
+                </li>
+
+      <!-- Nav item -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> 
+          <div class="badge-notif badge-notif-bottom"></div>
+          <i class="bi bi-bell"></i> <span class="nav-text"> Notifications </span>
+        </a>
+                </li>
+      
+      <!-- Nav item -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> <i class="bi bi-ui-radios-grid"></i> <span class="nav-text"> My network </span> </a>
+                </li>
+
+            </ul>
+        </div>
+          <!-- Main navbar END -->
+
+          <!-- Nav right START -->
+          <ul class="nav flex-nowrap align-items-center ms-auto list-unstyled">
+      <li class="nav-item ms-2 dropdown nav-search">
+        <a class="nav-link btn icon-md p-0" href="#" id="searchDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-search fs-5"> </i>
+        </a>
+        <div class="dropdown-menu dropdown-animation dropdown-menu-end p-3 small" aria-labelledby="searchDropdown">
+          <!-- Profile info -->
+          <div class="nav flex-nowrap align-items-center">
+            <div class="nav-item w-100">
+              <form class="rounded position-relative">
+                <input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search">
+                <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item ms-2 dropdown">
+                  <a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% comment %} {{request.user.profile_image}} {% endcomment %}
+                        <img  class="avatar-img user-pic rounded-2" src="{{request.user.image_url}}" alt="">
+                  </a>
+
+        {% if request.user.is_authenticated %}
+        <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
+          <!-- Profile info -->
+          <li class="px-3">
+            <div class="d-flex align-items-center position-relative">
+              <!-- Avatar -->
+              <div class="avatar me-3">
+                {% comment %} {{request.user.profile_image_sm}} {% endcomment %}
+
+                <img class="avatar-img user-pic rounded-circle" src="{{request.user.image_url}}" alt="avatar">
+              </div>
+              <div>
+                <a class="h6 stretched-link" href="{% url 'home:profile' request.user.slug %}">{{request.user|title}}</a>
+                <p class="small m-0">{% if request.user.occupation %}{{request.user.occupation | title}}{% endif %}</p>
+              </div>
+            </div>
+            <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'home:profile' request.user.slug %}">View profile</a>
+          </li>
+          <!-- Links -->
+          <li><a class="dropdown-item" href="{% url 'home:update-account' %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
+          <li class="dropdown-divider"></li>
+          <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account_logout' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
+          <li> <hr class="dropdown-divider"></li>
+          {% else %}
+          <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-1 small me-md-n3" aria-labelledby="profileDropdown">
+          <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account_login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign In</a></li>
+          <li> <hr class="dropdown-divider"></li>
+          {% endif %}
+          <!-- Dark mode switch START -->
+          <li>
+            <div class="modeswitch-wrap" id="darkModeSwitch">
+              <div class="modeswitch-item">
+                <div class="modeswitch-icon"></div>
+              </div>
+              <span>Dark mode</span>
+            </div>
+          </li> 
+          <!-- Dark mode switch END -->
+        </ul>
+              </li>
+          </ul>
+          <!-- Nav right END -->
+      </div>
+  </nav>
+  <!-- Logo Nav END -->
+</header>
+<!-- =======================
+Header END -->

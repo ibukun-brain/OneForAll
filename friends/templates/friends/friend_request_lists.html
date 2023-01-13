@@ -1,0 +1,152 @@
+{% extends 'partials/_base.html' %}
+{% load static %}
+{% block title %}Connections{% endblock title %}
+
+{% block body %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    
+    <!-- Container START -->
+    <div class="container">
+        <div class="row g-4">
+            {% include 'partials/_leftsidebar2.html' %}
+    
+            <!-- Main content START -->
+            <div class="col-md-8 col-lg-6 vstack gap-4">
+            <!-- Card START -->
+            <div class="card">
+                <!-- Card header START -->
+                <div class="card-header border-0 pb-0">
+                <div class="row g-2">
+                    <div class="col-lg-2">
+                    <!-- Card title -->
+                    <h1 class="h4 card-title mb-lg-0">Friends</h1>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 ms-lg-auto">
+                    <!-- Select Groups -->
+                    <select class="form-select js-choice choice-select-text-none" data-search-enabled="false">
+                        <option value="AB">Alphabetical</option>
+                        <option value="NG">Newest group</option>
+                        <option value="RA">Recently active</option>
+                        <option value="SG">Suggested</option>
+                    </select>
+                    </div>
+                </div>
+                </div>
+                <!-- Card header START -->
+                <!-- Card body START -->
+                <div class="card-body" id="friend-requests-card-parent">
+                <!-- Tab nav line -->
+                    {% include 'friends/partials/_friend_request_list.html' %}
+                    {% comment %} <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'friends:friend-lists' request.user.slug %}"> Friend{{friends|pluralize}} ({{friends.count}}) </a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'friends:friend-requests' request.user.slug %}"> Friend Request{{friend_requests|pluralize}} ({{friend_requests.count}})  </a> </li>
+                        
+                        <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-3"> Suggested for you </a> </li>
+                    </ul>
+                    <div class="tab-content mb-0 pb-0">
+        
+                        <!-- Friends groups tab START -->
+                        <div class="tab-pane fade show active" id="tab-1">
+                        {% if friend_requests %}
+                            <div class="row g-4">
+                                {% for request in friend_requests %}
+                                    <div class="col-sm-6 col-lg-4">
+                                        <!-- Card START -->
+                                        <div class="card">
+                                        <div class="h-80px rounded-top" style="background-image:url({{request.sender.cover_image_url}}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                                            <!-- Card body START -->
+                                            <div class="card-body text-center pt-0">
+                                            <!-- Avatar -->
+                                            <div class="avatar avatar-lg mt-n5 mb-3">
+                                                <a href="group-details.html"><img class="avatar-img rounded-circle border border-white border-3 bg-white" src="{{request.sender.image_url}}" alt=""></a>
+                                            </div>
+                                            <!-- Info -->
+                                            <h5 class="mb-0"> <a href="group-details.html">{{request.sender}}</a></h5>
+                                            <small> <i class="bi bi-people pe-1"></i> 3 Mutual Friends</small>
+                                        </div>
+                                        <!-- Card body END -->
+                                        <!-- Card Footer START -->
+                                        <div class="card-footer text-center">
+                                            <a class="btn btn-primary-soft btn-sm" href="#!"><i class="bi bi-person-check"></i> Accept </a>
+                                            <a class="btn btn-danger-soft btn-sm" href="#!"><i class="bi bi-person-x"></i> Decline </a>
+
+                                        </div>
+                                        <!-- Card Footer END -->
+                                        </div>
+                                        <!-- Card END -->
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="my-sm-5 py-sm-5 text-center">
+                                <i class="display-1 text-muted bi bi-people"> </i>
+                                <h4 class="mt-2 mb-3 text-body">You have no friend requests at the moment</h4>
+                            </div>
+                        {% endif %}
+                            
+                        </div>
+                        <!-- Friend lists tab END -->
+        
+                        <!-- friend requqst START -->
+                        <div class="tab-pane fade" id="tab-2">
+                        <div class="row g-4">
+
+                            <div class="col-sm-6 col-lg-4">
+                            <!-- Card START -->
+                            <div class="card">
+                                <div class="h-80px rounded-top" style="background-image:url(assets/images/bg/03.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                                <!-- Card body START -->
+                                <div class="card-body text-center pt-0">
+                                    <!-- Avatar -->
+                                    <div class="avatar avatar-lg mt-n5 mb-3">
+                                        <a href="group-details.html"><img class="avatar-img rounded-circle border border-white border-3 bg-white" src="assets/images/logo/05.svg" alt=""></a>
+                                    </div>
+                                    <!-- Info -->
+                                    <h5 class="mb-0"><a href="group-details.html">Team yes, we can</a></h5>
+                                    <small> <i class="bi bi-lock pe-1"></i> Private Group</small>
+
+                                </div>
+                                <!-- Card body END -->
+                                <!-- Card Footer START -->
+                                <div class="card-footer text-center">
+                                <a class="btn btn-primary-soft btn-sm" href="#!"><i class="bi bi-person-check"></i> Accept </a>
+                                <a class="btn btn-danger-soft btn-sm" href="#!"><i class="bi bi-person-x"></i> Decline </a>
+
+                                </div>
+                                <!-- Card Footer END -->
+                            </div>
+                            <!-- Card END -->
+                            </div>
+                        </div>
+                        </div>
+                        <!-- friend request END -->
+        
+                        <!-- Suggested for you START -->
+                        <div class="tab-pane fade" id="tab-3">
+                            <!-- Add group -->
+                        <div class="my-sm-5 py-sm-5 text-center">
+                            <i class="display-1 text-muted bi bi-people"> </i>
+                            <h4 class="mt-2 mb-3 text-body">No Suggestions at the moment</h4>
+                        </div>
+                        </div>
+                        <!-- Suggested for you END -->
+        
+                    </div> {% endcomment %}
+                </div>
+            <!-- Card body END -->
+            </div>
+            <!-- Card END -->
+        </div>
+        <!-- Right sidebar END -->
+            
+
+    
+    </div> <!-- Row END -->
+</div>
+<!-- Container END -->
+</main>
+  <!-- **************** MAIN CONTENT END **************** -->
+  
+
+{% endblock body %}

@@ -1,0 +1,77 @@
+<ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+    <li class="nav-item"> <a class="nav-link" href="{% url 'friends:friend-lists' request.user.slug %}"> Friend{{friends|pluralize}} ({{friends.count}}) </a> </li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'friends:friend-requests' request.user.slug %}"> Friend Request{{friend_requests|pluralize}} ({{friend_requests.count}})  </a> </li>
+    <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-3"> Suggested for you </a> </li>
+
+    {% comment %} <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Friend{{friends|pluralize}} ({{friends.count}}) </a> </li> {% endcomment %}
+    {% comment %} <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Friend Requests  </a> </li> {% endcomment %}
+</ul>
+<div class="tab-content mb-0 pb-0">
+
+    <!-- Friends groups tab START -->
+    <div class="tab-pane fade show active" id="tab-1">
+    {% if friends %}
+    <div class="row g-4">
+        {% for friend in friends %}
+        <div class="col-sm-6 col-lg-4">
+            <!-- Card START -->
+            <div class="card">
+            <div class="h-80px rounded-top" style="background-image:url({{friend.cover_image_url}}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                <!-- Card body START -->
+                <div class="card-body text-center pt-0">
+                <!-- Avatar -->
+                <div class="avatar avatar-lg mt-n5 mb-3">
+                    <a href="group-details.html"><img class="avatar-img rounded-circle border border-white border-3 bg-white" src="{{friend.image_url}}" alt=""></a>
+                </div>
+                <!-- Info -->
+                <h5 class="mb-0"> <a href="group-details.html">{{friend}}</a></h5>
+                <small> <i class="bi bi-people pe-1"></i> 3 Mutual Friends</small>
+            </div>
+            <!-- Card body END -->
+            <!-- Card Footer START -->
+            <div class="card-footer p-0 d-flex text-center">
+  
+                <a class="btn btn-primary-soft me-2"> <i class="bi bi-chat-left-text"></i> Message </a>
+
+                <form hx-target="#friend-list-card-parent" hx-post="{% url 'friends:remove-friend' %}">
+                    <input type="hidden" name="remover_friend" value="{{friend.slug}}">
+                    <button class="btn btn-danger-soft me-2"> <i class="bi bi-person-x pe-1"></i> Unfriend </button>
+            
+                </form>
+
+            </div>
+            <!-- Card Footer END -->
+            </div>
+            <!-- Card END -->
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="my-sm-5 py-sm-5 text-center">
+        <i class="display-1 text-muted bi bi-people"> </i>
+        <h4 class="mt-2 mb-3 text-body">You have no friends at the moment</h4>
+    </div>
+    {% endif %}
+    </div>
+    <!-- Friend lists tab END -->
+
+    <!-- friend request START -->
+    <div class="tab-pane fade" id="tab-2">
+        <div class="my-sm-5 py-sm-5 text-center">
+            <i class="display-1 text-muted bi bi-people"> </i>
+            <h4 class="mt-2 mb-3 text-body">No Friend Requests at the moment</h4>
+        </div>
+    </div>
+    <!-- friend request END -->
+
+    <!-- Suggested for you START -->
+    <div class="tab-pane fade" id="tab-3">
+        <!-- Add group -->
+    <div class="my-sm-5 py-sm-5 text-center">
+        <i class="display-1 text-muted bi bi-people"> </i>
+        <h4 class="mt-2 mb-3 text-body">No Suggestions at the moment</h4>
+    </div>
+    </div>
+    <!-- Suggested for you END -->
+
+</div>

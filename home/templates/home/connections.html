@@ -1,0 +1,94 @@
+{% extends 'partials/_base.html' %}
+{% load static %}
+{% block title %}Connections{% endblock title %}
+
+{% block body %}
+
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+  
+    <div class="container">
+        <div class="row g-4">
+          {% include 'home/partials/_profile_top.html' %}
+
+
+          <!-- Card Connections START -->
+          <div class="card">
+            <!-- Card header START -->
+            <div class="card-header border-0 pb-0">
+              <h5 class="card-title"> Connections</h5> 
+            </div>
+            <!-- Card header END -->
+            <!-- Card body START -->
+            <div class="card-body">
+              <!-- Connections Item -->
+              {% for friend in friend_list_tuple %}
+              
+              <div class="d-md-flex align-items-center mb-4">
+                <!-- Avatar -->
+                <div class="avatar me-3 mb-3 mb-md-0">
+                  <a href="{% url 'home:profile' friend.0.slug %}"> <img class="avatar-img rounded-circle" src="{{friend.0.image_url}}" alt=""> </a>
+                </div>
+                <!-- Info -->
+                <div class="">
+                  <div class="d-sm-flex align-items-start">
+                    <h6 class="mb-0"><a href="{% url 'home:profile' friend.0.slug %}">{{friend.0}}</a></h6>
+                    {% if friend.0.occupation %}<p class="small ms-sm-2 mb-0">{{friend.0.occupation}}</p>{% endif %}
+                </div>
+                <!-- Connections START -->
+                <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                  <li class="small">
+                    Carolyn Ortiz, Frances Guerrero, and 20 other shared connections
+                  </li>
+                </ul>
+                <!-- Connections END -->
+              </div>
+              <!-- Button -->
+              {% if friend.1 %}
+              <div class="ms-md-auto d-flex">
+                <a class="btn btn-primary-soft btn-sm mb-0 me-2"><i class="bi bi-chat-left-text"></i> Message </a>
+                <a class="btn btn-danger-soft btn-sm mb-0"><i class="bi bi-person-x"></i> Remove </a>
+              </div>
+              {% elif request.user == friend.0 %}
+              <div class="ms-md-auto d-flex">
+                <button class="btn btn-primary-soft btn-sm mb-0"><i class="bi bi-person"></i> This is You </button>
+              </div>
+              {% else %}
+              <div class="ms-md-auto d-flex">
+                <a class="btn btn-primary-soft btn-sm mb-0"><i class="bi bi-person-check"></i> Send Request </a>
+              </div>
+              {% endif %} 
+            </div>
+            {% endfor %}
+
+        <div class="d-grid">
+          <!-- Load more button START -->
+          <a href="#!" role="button" class="btn btn-sm btn-loader btn-primary-soft" data-bs-toggle="button" aria-pressed="true">
+            <span class="load-text"> Load more connections </span>
+            <div class="load-icon">
+              <div class="spinner-grow spinner-grow-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </a>
+          <!-- Load more button END -->
+        </div>
+
+        </div>
+        <!-- Card body END -->
+        </div>
+        <!-- Card Connections END -->
+
+      </div>
+
+
+
+
+          {% include 'home/partials/_profile_right_sidebar.html' %}
+
+    
+        </div> <!-- Row END --> 
+      </div>
+
+</main>
+{% endblock body %}

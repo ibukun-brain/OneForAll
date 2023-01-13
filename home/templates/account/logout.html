@@ -1,0 +1,40 @@
+{% extends "partials/_auth_Layout.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Sign Out" %}{% endblock title %}
+
+{% block body %}
+<main>
+  
+  <!-- Container START -->
+  <div class="container">
+    <div class="row justify-content-center align-items-center vh-100 py-5">
+      <!-- Main content START -->
+      <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+        <!-- Reset password START -->
+        <div class="card card-body rounded-3 text-center p-4 p-sm-5">
+          <!-- Title -->
+          <h1>{% trans "Sign Out" %}</h1>
+          <p class="lead">{% trans 'Are you sure you want to sign out?' %}</p>
+          <div class="mb-3">
+            <form method="post" action="{% url 'account_logout' %}">
+              {% include 'partials/_form_errors.html' %}
+              {% csrf_token %}
+              <button type="submit" class="btn btn-lg btn-success-soft">{% trans 'Sign Out' %}</button>
+            </form>
+          </div>
+          <p class="mb-0 mt-3">©2022 <a target="_blank" href="{% url 'home:index' %}">OneForAll.</a> All rights reserved</p>
+
+        </div>
+        <!-- Reset password END -->
+      </div>
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+
+
+
+{% endblock body %}
